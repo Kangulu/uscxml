@@ -18,6 +18,13 @@ PROJECT(uSCXML)
 # General Setup
 #################################################
 
+if(MSVC)
+	SET( CMAKE_SHARED_LINKER_FLAGS ${CMAKE_SHARED_LINKER_FLAGS}
+	"/NODEFAULTLIBS:LIBCMT" )
+	SET( CMAKE_SHARED_LINKER_FLAGS ${CMAKE_SHARED_LINKER_FLAGS}
+	"/NODEFAULTLIBS:MSVCRT" )
+endif()
+
 # where to find more cmake scripts
 list (APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/contrib/cmake")
 set (CMAKE_BUILD_SCRIPTS "${PROJECT_SOURCE_DIR}/contrib/cmake")
@@ -217,10 +224,10 @@ else()
 	add_definitions("-DUSCXML_STATIC")
 endif()
 
-OPTION(BUILD_BINDING_JAVA "Build language bindings for Java" ON)
-OPTION(BUILD_BINDING_LUA "Build language bindings for Lua" ON)
-OPTION(BUILD_BINDING_CSHARP "Build language bindings for CSharp" ON)
-OPTION(BUILD_BINDING_PYTHON "Build language bindings for Python" ON)
+OPTION(BUILD_BINDING_JAVA "Build language bindings for Java" OFF)
+OPTION(BUILD_BINDING_LUA "Build language bindings for Lua" OFF)
+OPTION(BUILD_BINDING_CSHARP "Build language bindings for CSharp" OFF)
+OPTION(BUILD_BINDING_PYTHON "Build language bindings for Python" OFF)
 OPTION(BUILD_BINDING_PHP "Build language bindings for PHP" OFF)
 
 OPTION(WITH_CACHE_FILES "Support for caching data in temporary files" ON)
@@ -391,7 +398,7 @@ find_package(SWIG)
 
 # JavaScriptCore
 # https://github.com/Lichtso/JSC-Standalone
-OPTION(WITH_DM_ECMA_JSC "Do search for JavaScriptCore" ON)
+OPTION(WITH_DM_ECMA_JSC "Do search for JavaScriptCore" OFF)
 if (WITH_DM_ECMA_JSC)
 	find_package(JSC)
 	if (JSC_FOUND)
@@ -406,7 +413,7 @@ if (WITH_DM_ECMA_JSC)
 endif()
 
 # V8
-OPTION(WITH_DM_ECMA_V8 "Do search for the V8 ECMAScript implementation" ON)
+OPTION(WITH_DM_ECMA_V8 "Do search for the V8 ECMAScript implementation" OFF)
 if (WITH_DM_ECMA_V8)
 	find_package(V8)
 	if (V8_FOUND)
@@ -423,7 +430,7 @@ if (WITH_DM_ECMA_V8)
 endif()
 
 # Lua
-OPTION(WITH_DM_LUA "Do search for the Lua libraries" ON)
+OPTION(WITH_DM_LUA "Do search for the Lua libraries" OFF)
 if (WITH_DM_LUA)
 	if (WIN32)
 		# LuaForWindows:
@@ -445,7 +452,7 @@ if (WITH_DM_LUA)
 endif()
 
 # Python
-OPTION(WITH_DM_PYTHON "Do search for the Python libraries" ON)
+OPTION(WITH_DM_PYTHON "Do search for the Python libraries" OFF)
 if (WITH_DM_PYTHON)
 	find_package(PythonLibs)
 	if (PYTHONLIBS_FOUND)

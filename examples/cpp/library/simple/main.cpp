@@ -1,5 +1,6 @@
 #include <iostream>
 #include "uscxml/uscxml.h"
+#pragma comment(lib, "C:/Program Files (x86)/uSCXML/lib/uscxml.lib")
 
 int main(int argc, char *argv[])
 {
