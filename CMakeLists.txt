@@ -211,13 +211,7 @@ if (CXX_MISSING_FEATURES)
 	message(FATAL_ERROR "Compiler is missing required C++11 features: ${CXX_MISSING_FEATURES}")
 endif()
 
-if (CMAKE_CROSSCOMPILING OR WIN32)
-	#Build as static library
-	set(BUILD_SHARED_LIBS OFF)
-	message("BUILD_SHARED_LIBS: ${BUILD_SHARED_LIBS}")
-else()
-	OPTION(BUILD_SHARED_LIBS "Build shared libraries" ON)
-endif()
+OPTION(BUILD_SHARED_LIBS "Build shared libraries" ON)
 
 # built shared or static libraries?
 if(BUILD_SHARED_LIBS)
