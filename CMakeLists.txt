@@ -212,7 +212,9 @@ if (CXX_MISSING_FEATURES)
 endif()
 
 if (CMAKE_CROSSCOMPILING OR WIN32)
-	OPTION(BUILD_SHARED_LIBS "Build shared libraries" ON)
+	#Build as static library
+	set(BUILD_SHARED_LIBS OFF)
+	message("BUILD_SHARED_LIBS: ${BUILD_SHARED_LIBS}")
 else()
 	OPTION(BUILD_SHARED_LIBS "Build shared libraries" ON)
 endif()
