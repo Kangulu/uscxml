@@ -680,12 +680,16 @@ SELECT_TRANSITIONS:
 				/* check whether it is explicitly conflicting or compatible, calculate if neither */
 				if (_flags & USCXML_CTX_TRANSITION_FOUND) {
 					BENCHMARK("select transitions conflict & compatible calc");
-
-					if (_conflicting[transition->postFixOrder]) {
+					
+					const bool isconflicting = _conflicting.num_blocks() > transition->postFixOrder 
+						&& _conflicting[transition->postFixOrder];
+					if (isconflicting) {
 						// this transition is explicitly conflicting
 						continue;
 					}
-					if (!_compatible[transition->postFixOrder]) {
+
+					const bool notcompatible = _compatible.num_blocks() <= transition->postFixOrder || !_compatible[transition->postFixOrder];
+					if (notcompatible) {
 						// it is not explicitly compatible, we know nothing!
 						BENCHMARK("select transitions conflict & compatible calc no entry");
 
@@ -744,15 +748,24 @@ SELECT_TRANSITIONS:
 
 					/* add all conflicting transitions listed in ours */
 					for (auto conflict : transition->conflicting) {
+						if (_conflicting.num_blocks() <= conflict) {
+							_conflicting.resize(conflict + 1);
+						}
 						_conflicting[conflict] = true;
 					}
 
 				} else {
 					/* Very first transition added to optimally transition set */
 					for (auto compatible : transition->compatible) {
+						if (_compatible.num_blocks() <= compatible) {
+							_compatible.resize(compatible + 1);
+						}
 						_compatible[compatible] = true;
 					}
 					for (auto conflict : transition->conflicting) {
+						if (_conflicting.num_blocks() <= conflict) {
+							_conflicting.resize(conflict + 1);
+						}
 						_conflicting[conflict] = true;
 					}
 				}
